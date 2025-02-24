@@ -20,31 +20,42 @@ string ones_complement(string binary)
     }
     return binary;
 }
-string convert_binary_to_padded_bits(long long num)
+int binary_to_decimal(string n)
 {
-    if (num == 0)
+    string num = n;
+    int dec_value = 0;
+
+    // Initializing base value to 1, i.e 2^0
+    int base = 1;
+
+    int len = num.length();
+    for (int i = len - 1; i >= 0; i--)
+    {
+        if (num[i] == '1')
+            dec_value += base;
+        base = base * 2;
+    }
+
+    return dec_value;
+}
+
+string dec_to_binary(long long n)
+{
+    if (n == 0)
     {
         return "0";
     }
+    string bin = "";
 
-    int level = ceil(log2(num + 1));
-    int binary_size = (1 << level);
-
-    string result;
-    long long temp = num;
-
-    while (temp > 0)
+    while (n > 0)
     {
-        result = (temp % 2 ? '1' : '0') + result;
-        temp /= 2;
+        int bit = n % 2;
+        bin.push_back('0' + bit);
+        n /= 2;
     }
 
-    while (result.length() < binary_size)
-    {
-        result = '0' + result;
-    }
-
-    return result;
+    reverse(bin.begin(), bin.end());
+    return bin;
 }
 
 string add_binary(string A, string B)
@@ -85,22 +96,29 @@ string wrap_sum(string a, string b)
     return sum;
 }
 
-void receiver(vector<int> inp, string checksum)
+void receiver(vector<int> inp)
 {
     string binary = string(WRAP_COUNT, '0');
 
     for (int i = 0; i < inp.size(); i++)
     {
         int num = inp[i];
-        string num_binary = convert_binary_to_padded_bits(num);
+        string num_binary = dec_to_binary(num);
         binary = wrap_sum(binary, num_binary);
     }
 
-    binary = wrap_sum(binary, checksum);
     string one_s_binary = ones_complement(binary);
 
-    string target = string(WRAP_COUNT, '0');
-    if (one_s_binary == target)
+    bool ok = true;
+    for (auto p : one_s_binary)
+    {
+        if (p != '0')
+        {
+            ok = false;
+        }
+    }
+
+    if (ok)
         cout << "Message sent is okay";
     else
         cout << "Message sent is not okay";
@@ -124,9 +142,12 @@ int main()
     sender(inp);
 
     long long sum = sum_of_vector(inp);
-    string sum_bit = convert_binary_to_padded_bits(sum);
+
+    string sum_bit = dec_to_binary(sum);
     string one_s_sum = ones_complement(sum_bit);
 
-    receiver(inp, one_s_sum);
+    inp.push_back(binary_to_decimal(one_s_sum));
+
+    receiver(inp);
     return 0;
 }

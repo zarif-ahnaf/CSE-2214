@@ -1,0 +1,27 @@
+function [t,x] = polarrz(bits,bitrate)
+T = length(bits)/bitrate;
+display(T);
+n =30;
+N=n*length(bits);
+display(N);
+
+dt = T/N;
+display(dt);
+
+t = 0:dt:T;
+display(t)
+x = [zeros(1,length(t))];
+display(x);
+
+last_level = 1;
+
+for i=0:length(bits)-1
+    if bits(i+1) == 1
+        x(i*n+1:i*n+floor(0.5*n)) =1;
+    else
+        x(i*n+1:i*n+floor(0.5*n)) =-1;
+    end
+end
+display(x);
+
+end
