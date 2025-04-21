@@ -21,5 +21,4 @@ function [t,x] = polarnrzl(bits,bitrate)
         end
     end
     display(x);
-
 end
