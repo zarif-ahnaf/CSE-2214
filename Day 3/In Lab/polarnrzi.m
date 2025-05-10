@@ -7,7 +7,7 @@ function [t,x] = polarnrzi(bits,bitrate)
 
     dt = T/N;
     display(dt);
-
+    
     t = 0:dt:T;
     display(t)
     x = [zeros(1,length(t))];
