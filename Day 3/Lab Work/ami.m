@@ -20,7 +20,7 @@ function [t, x] = ami(bits, bitrate)
         end_idx = (i + 1) * n;
         
         if bits(i+1) == 1
-            x(start_idx:end_idx) = last_one_polarity;
+            x(start_idx:end_idx) = -last_one_polarity;
             last_one_polarity = -last_one_polarity; % Toggle polarity
         else
             x(start_idx:end_idx) = 0; % Zero remains at zero level

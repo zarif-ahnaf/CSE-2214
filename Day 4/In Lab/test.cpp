@@ -62,6 +62,13 @@ void receiver(string bin, string divisor)
 
 int main()
 {
+    string data;
+    string divisor;
+
+    cout << "Enter Data: ";
+    cin >> data;
+    cout << "Enter Divisor: ";
+    cin >> divisor;
     string data = "11100101";
     string divisor = "11011";
     int divisorLen = divisor.length();
